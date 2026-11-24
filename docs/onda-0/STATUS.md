@@ -11,7 +11,7 @@ Pacote: `buriti/i-educar-exportacao-unificada-package` 0.1.0
 | Testes automatizados sem banco | **OK — 60 asserts, 0 falhas** |
 | Comando Artisan de prova | **OK — `php artisan exportacao:demo`** |
 | Ambiente app 2.12 (PHP/Laravel) | **OK — PHP 8.4.24 · Laravel 13.31.0** |
-| Rede mínima no banco (escolas/alunos) | **PENDENTE — Postgres local connection refused** |
+| Rede mínima no banco (escolas/alunos) | **OK — 2 escolas · 23 turmas · 211 alunos · 665 pessoas** |
 
 ## Evidências 0.3 — exportação
 
@@ -50,23 +50,20 @@ Script: `php packages/buriti/i-educar-exportacao-unificada-package/docs/onda-0/c
 | PHP 8.4.24 + ext pgsql/gd/zip/xml | OK |
 | `.env` / `APP_KEY` / `DB_*` | OK |
 | `php artisan about` | App local, tenant1, locale pt-br |
-| Postgres `localhost:5432` | **FAIL** — connection refused (Docker daemon off) |
-| Redis `localhost:6379` | WARN — não alcançável |
+| Postgres `localhost:5432` | **OK** — container `ieducar-postgres` (volume `i-educar_postgres`) |
+| Redis `localhost:6379` | **OK** — container `ieducar-redis` |
 | Artefatos exportação | OK 10/10 |
-| Seeds / `ieducar:matriculas` | Bloqueado até subir o banco |
+| Rede mínima (escolas/turmas/alunos) | **OK** |
 
-### Como completar 0.2 quando o banco estiver no ar
+### Comandos de ambiente
 
 ```bash
-# subir PostgreSQL (docker/serviço local)
-php artisan db:show
-php artisan migrate --force
-# se perfil setup disponível:
-# php artisan ieducar:matriculas
+docker compose up -d postgres redis
+php packages/buriti/i-educar-exportacao-unificada-package/docs/onda-0/check-ambiente.php
 php artisan about
 ```
 
-Critério: login SME + pelo menos 1 escola, 1 turma e alunos listáveis.
+Critério Onda 0.2: atendido (SME pode logar com a base existente).
 
 ## Integração no monorepo
 
