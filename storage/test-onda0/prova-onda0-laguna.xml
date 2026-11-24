@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<exportacao>
+  <titulo>Prova Onda 0 — Exportação Laguna</titulo>
+  <subtitulo>TR 4.2 / 4.3 · i-Educar 2.12 · buriti/exportacao-unificada</subtitulo>
+  <colunas>
+    <coluna>Escola</coluna>
+    <coluna>Turno</coluna>
+    <coluna>Alunos</coluna>
+    <coluna>Situacao</coluna>
+  </colunas>
+  <linhas>
+    <linha>
+      <celula coluna="Escola">EMEF Centro</celula>
+      <celula coluna="Turno">Matutino</celula>
+      <celula coluna="Alunos">120</celula>
+      <celula coluna="Situacao">Ativa</celula>
+    </linha>
+    <linha>
+      <celula coluna="Escola">EMEI Praia</celula>
+      <celula coluna="Turno">Vespertino</celula>
+      <celula coluna="Alunos">48</celula>
+      <celula coluna="Situacao">Ativa</celula>
+    </linha>
+    <linha>
+      <celula coluna="Escola">EMEF Progresso</celula>
+      <celula coluna="Turno">Integral</celula>
+      <celula coluna="Alunos">86</celula>
+      <celula coluna="Situacao">Ativa</celula>
+    </linha>
+  </linhas>
+</exportacao>

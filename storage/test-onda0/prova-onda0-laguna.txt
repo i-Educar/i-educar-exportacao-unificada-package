@@ -1,0 +1,7 @@
+Prova Onda 0 — Exportação Laguna
+TR 4.2 / 4.3 · i-Educar 2.12 · buriti/exportacao-unificada
+
+Escola	Turno	Alunos	Situacao
+EMEF Centro	Matutino	120	Ativa
+EMEI Praia	Vespertino	48	Ativa
+EMEF Progresso	Integral	86	Ativa
