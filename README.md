@@ -2,6 +2,16 @@
 
 Pacote Buriti para o i-Educar **2.12**. Centraliza a geração de listas/relatórios nos formatos exigidos pelo Anexo I (itens **4.2** e **4.3**): PDF, ODT, DOCX, ODS, XLSX, HTML, XML, CSV, TXT e JPEG.
 
+## Compatibilidade
+
+| Produto | Versão |
+| --- | --- |
+| **i-Educar** | **2.12.x** (min. 2.12.0) |
+| **i-Diário** | Portabilis i-Diário (espelho Laguna) via API/SSO do core |
+| Pacote | `0.2.0` |
+
+Declarado em `composer.json` → `extra.ieducar` e `extra.idiario`.
+
 ## Onda 0
 
 Gate: **um relatório em ≥ 3 formatos**. Este pacote gera **todos** os 10 formatos do TR.
