@@ -3,6 +3,7 @@
 namespace iEducar\Packages\BuritiExportacaoUnificada\Providers;
 
 use iEducar\Packages\BuritiExportacaoUnificada\Console\ExportacaoDemoCommand;
+use iEducar\Packages\BuritiExportacaoUnificada\Console\ExportacaoDemoCriticosCommand;
 use iEducar\Packages\BuritiExportacaoUnificada\Services\Exportador;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,7 +19,7 @@ class ExportacaoUnificadaServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
-            $this->commands([ExportacaoDemoCommand::class]);
+            $this->commands([ExportacaoDemoCommand::class, ExportacaoDemoCriticosCommand::class]);
         }
     }
 }
