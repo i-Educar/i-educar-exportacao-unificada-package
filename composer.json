@@ -1,7 +1,7 @@
 {
     "name": "buriti/i-educar-exportacao-unificada-package",
     "description": "Exportação unificada de listas e relatórios (TR 4.x Laguna) para o i-Educar 2.12.",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "type": "library",
     "license": "GPL-2.0-or-later",
     "keywords": [

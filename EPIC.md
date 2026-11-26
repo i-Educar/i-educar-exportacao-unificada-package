@@ -6,13 +6,13 @@
 | TR Laguna | **4.x** |
 | Prioridade | **P1** |
 | Nota atual (executivo) | **B** |
-| Fonte | `tmp/DOC-EXECUTIVO-PE-77-2026-LAGUNA-IEDUCAR.md` |
+| Fonte | `packages/buriti/docs/laguna/DOC-EXECUTIVO-PE-77-2026-LAGUNA-IEDUCAR.md` |
 | Regra de ouro | Pregão Eletrônico 77/2026 · Laguna/SC · PoC ≥ 85% por módulo · gaps ≤ 30 dias |
-| Base atual | **Onda 0:** drivers unificados PDF/ODT/DOCX/ODS/XLSX/HTML/XML/CSV/TXT/JPEG operacionais (`exportacao:demo`) |
+| Base atual | **0.3.0:** drivers TR + UI `/exportacao` + layout institucional + ponte QR validador (`EmissorDocumento`) |
 
 ## Objetivo
 
-Serviço único de exportação cobrindo PDF ISO 32000, ODT, DOCX, ODS, XLSX, HTML, XML, CSV, TXT e JPEG.
+Serviço único de exportação cobrindo PDF ISO 32000, ODT, DOCX, ODS, XLSX, HTML, XML, CSV, TXT e JPEG — com cabeçalho/rodapé/logos/assinaturas padronizados e autenticação via validador de documentos (Relatórios avançados ou fallback local). Usado por todos os módulos Buriti; **não** substitui o pacote de Relatórios avançados.
 
 ## Padrão técnico (i-Educar 2.12)
 

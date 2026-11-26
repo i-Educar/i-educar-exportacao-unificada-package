@@ -2,15 +2,27 @@
 
 Pacote Buriti para o i-Educar **2.12**. Centraliza a geração de listas/relatórios nos formatos exigidos pelo Anexo I (itens **4.2** e **4.3**): PDF, ODT, DOCX, ODS, XLSX, HTML, XML, CSV, TXT e JPEG.
 
+**Não substitui** o pacote Serventec de Relatórios avançados — é o motor compartilhado dos demais módulos Buriti, com layout institucional e QR/link do validador de documentos.
+
 ## Compatibilidade
 
 | Produto | Versão |
 | --- | --- |
 | **i-Educar** | **2.12.x** (min. 2.12.0) |
 | **i-Diário** | Portabilis i-Diário (espelho Laguna) via API/SSO do core |
-| Pacote | `0.2.0` |
+| Pacote | `0.3.0` |
 
 Declarado em `composer.json` → `extra.ieducar` e `extra.idiario`.
+
+## UI / Laguna PoC
+
+| Rota | Função |
+| --- | --- |
+| `/exportacao` | Painel de configuração (identidade, formatos, validador) |
+| `/exportacao/demo` | Emite amostra TR com layout + QR |
+| `/exportacao/validar/{code}` | Validação pública (QR) |
+
+Catálogo: `CatalogoModulos` → `id: exportacao` · `admin_url: /exportacao` · comandos `exportacao:demo`.
 
 ## Onda 0
 
@@ -20,21 +32,39 @@ Gate: **um relatório em ≥ 3 formatos**. Este pacote gera **todos** os 10 form
 # testes sem banco
 php packages/buriti/i-educar-exportacao-unificada-package/tests/run.php
 
-# demo no app (após composer plug-and-play / discover)
+# demo tabular
 php artisan exportacao:demo
-# arquivos em storage/app/exportacao-onda0/
+
+# demo com cabeçalho/rodapé/assinaturas/QR
+php artisan exportacao:demo --institucional
 ```
 
-## Uso no código
+## Uso nos módulos (preferir)
+
+```php
+use iEducar\Packages\BuritiExportacaoUnificada\Services\EmissorDocumento;
+use iEducar\Packages\BuritiExportacaoUnificada\Support\Formato;
+use iEducar\Packages\BuritiExportacaoUnificada\Support\TabelaExportacao;
+
+return app(EmissorDocumento::class)->download(
+    new TabelaExportacao('Alunos', ['Nome', 'Turma'], [['Ana', '1A']]),
+    Formato::Pdf,
+    'Escolar',
+    auth()->user()?->name,
+);
+```
+
+Motor tabular puro (sem layout/QR):
 
 ```php
 use iEducar\Packages\BuritiExportacaoUnificada\Services\Exportador;
 use iEducar\Packages\BuritiExportacaoUnificada\Support\Formato;
 use iEducar\Packages\BuritiExportacaoUnificada\Support\TabelaExportacao;
 
-$exportador = app(Exportador::class);
-$tabela = new TabelaExportacao('Alunos', ['Nome', 'Turma'], [['Ana', '1A']]);
-$arquivo = $exportador->exportar($tabela, Formato::Csv);
+$arquivo = app(Exportador::class)->exportar(
+    new TabelaExportacao('Alunos', ['Nome', 'Turma'], [['Ana', '1A']]),
+    Formato::Csv,
+);
 ```
 
 ## Documentos Laguna

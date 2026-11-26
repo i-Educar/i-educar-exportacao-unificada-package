@@ -38,5 +38,5 @@
 ## Referências
 
 - `packages/buriti/ORDEM-DESENVOLVIMENTO-LAGUNA.md`
-- `tmp/DOC-EXECUTIVO-PE-77-2026-LAGUNA-IEDUCAR.md`
-- OCR: `tmp/edital-ocr/MATRIZ-REQUISITOS-TR.md`
+- `packages/buriti/docs/laguna/DOC-EXECUTIVO-PE-77-2026-LAGUNA-IEDUCAR.md`
+- OCR: `packages/buriti/docs/laguna/MATRIZ-REQUISITOS-TR.md`

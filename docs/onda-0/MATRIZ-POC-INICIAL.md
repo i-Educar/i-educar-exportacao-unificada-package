@@ -45,4 +45,4 @@ Ver `MATRIZ-POC-MODULO-4.md`.
 
 - Status onda: `STATUS.md`
 - Check ambiente: `php docs/onda-0/check-ambiente.php` (a partir da raiz do app)
-- Matriz mestre OCR: `tmp/edital-ocr/MATRIZ-REQUISITOS-TR.md`
+- Matriz mestre OCR: `packages/buriti/docs/laguna/MATRIZ-REQUISITOS-TR.md`

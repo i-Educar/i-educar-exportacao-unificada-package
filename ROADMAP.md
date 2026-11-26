@@ -1,7 +1,7 @@
 # ROADMAP — Exportação Unificada (requisitos mínimos)
 
 > Pacote: `buriti/i-educar-exportacao-unificada-package` · TR **4.x** · Prioridade **P1** · Nota **B**  
-> Alinhado a `tmp/DOC-EXECUTIVO-PE-77-2026-LAGUNA-IEDUCAR.md`
+> Alinhado a `packages/buriti/docs/laguna/DOC-EXECUTIVO-PE-77-2026-LAGUNA-IEDUCAR.md`
 
 ## Visão
 
