@@ -33,6 +33,9 @@ class ExportacaoUnificadaServiceProvider extends ServiceProvider
                 $app->make(ValidadorDocumentoBridge::class),
             );
         });
+
+        // Fora de runningInConsole(): o check do Ambiente Laguna (HTTP) usa Artisan::all().
+        $this->commands([ExportacaoDemoCommand::class, ExportacaoDemoCriticosCommand::class]);
     }
 
     public function boot(): void
@@ -45,7 +48,9 @@ class ExportacaoUnificadaServiceProvider extends ServiceProvider
         $this->loadViewsFrom($root.'/resources/views', 'exportacao');
 
         if ($this->app->runningInConsole()) {
-            $this->commands([ExportacaoDemoCommand::class, ExportacaoDemoCriticosCommand::class]);
+            if (\App\Support\Tenancy\PackageTenant::allows(self::PACKAGE)) {
+                $this->loadMigrationsFrom($root.'/database/migrations');
+            }
         }
 
         // Validação pública (QR / link impresso) — sem auth.
