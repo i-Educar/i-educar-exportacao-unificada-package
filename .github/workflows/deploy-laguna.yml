@@ -30,7 +30,7 @@ jobs:
     # Bump de versão do CI committa com [skip ci] — evita loop de deploy.
     if: ${{ github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip ci]') }}
     # Pin por SHA (docs/laguna/deploys/REUSABLE_PIN) — nunca @main.
-    uses: i-Educar/i-educar-laguna-ambiente-package/.github/workflows/reusable-deploy-laguna.yml@cbb7bb474497456b980b1a39f9ba3479cf30e91b
+    uses: i-Educar/i-educar-laguna-ambiente-package/.github/workflows/reusable-deploy-laguna.yml@8c701a9541883059355e5c0dc702af300240f747
     with:
       package_repo: i-educar-exportacao-unificada-package
       server_path: packages/buriti/i-educar-exportacao-unificada-package
