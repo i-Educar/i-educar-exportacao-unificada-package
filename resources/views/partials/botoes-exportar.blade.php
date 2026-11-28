@@ -25,12 +25,16 @@
     $tituloModal = $tituloModal ?? 'Baixar documento';
     $leadModal = $leadModal ?? 'Escolha o conteúdo e o formato. PDF usa o modelo oficial de declaração (cabeçalho, borda, logos e QR).';
     $formatoPadrao = $formatoPadrao ?? ($formatos[0] ?? 'pdf');
-    $classeBotao = $classeBotao ?? 'botao primaria';
+    $classeBotao = $classeBotao ?? 'botao icone primaria';
     $moduloId = $moduloId ?? null;
 @endphp
 
-<button type="button" class="{{ $classeBotao }}" data-buriti-modal="{{ $modalId }}">
-    <i class="fa fa-download"></i> {{ $rotulo }}
+<button type="button"
+        class="{{ $classeBotao }}"
+        data-buriti-modal="{{ $modalId }}"
+        title="{{ $rotulo }}"
+        aria-label="{{ $rotulo }}">
+    <i class="fa fa-download" aria-hidden="true"></i>
 </button>
 @if(View::exists('buriti-ui::informes-modulo'))
     @include('buriti-ui::informes-modulo', ['moduloId' => $moduloId ?? null])

@@ -16,7 +16,7 @@
         'tituloModal' => 'Download — Demo exportação',
         'leadModal' => 'PDF no modelo de declaração (borda, cabeçalho, logos, rodapé e QR).',
     ])
-    <a class="botao claro" href="{{ url('/exportacao') }}"><i class="fa fa-arrow-left"></i> Painel</a>
+    <a class="botao claro icone" href="{{ url('/exportacao') }}" title="Painel" aria-label="Painel"><i aria-hidden="true" class="fa fa-arrow-left"></i></a>
 @endsection
 
 @section('conteudo')

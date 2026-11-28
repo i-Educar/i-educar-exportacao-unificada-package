@@ -7,8 +7,8 @@
     Relatórios avançados (Serventec) permanecem à parte.
 @endsection
 @section('acoes-topo')
-    <a class="botao" href="{{ url('/exportacao/demo') }}"><i class="fa fa-play"></i> Demonstração</a>
-    <a class="botao claro" href="{{ url('/exportacao/validar') }}"><i class="fa fa-qrcode"></i> Validar</a>
+    <a class="botao icone" href="{{ url('/exportacao/demo') }}" title="Demonstração" aria-label="Demonstração"><i aria-hidden="true" class="fa fa-play"></i></a>
+    <a class="botao claro icone" href="{{ url('/exportacao/validar') }}" title="Validar" aria-label="Validar"><i aria-hidden="true" class="fa fa-qrcode"></i></a>
 @endsection
 
 @section('conteudo')
