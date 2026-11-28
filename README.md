@@ -1,79 +1,54 @@
-# Exportação unificada (TR 4.x · Laguna)
+# Exportação unificada
 
-Pacote Buriti para o i-Educar **2.12**. Centraliza a geração de listas/relatórios nos formatos exigidos pelo Anexo I (itens **4.2** e **4.3**): PDF, ODT, DOCX, ODS, XLSX, HTML, XML, CSV, TXT e JPEG.
+Motor compartilhado de emissão de listas e relatórios em múltiplos formatos, com layout institucional e validação por QR.
 
-**Não substitui** o pacote Serventec de Relatórios avançados — é o motor compartilhado dos demais módulos Buriti, com layout institucional e QR/link do validador de documentos.
+Composer: `buriti/i-educar-exportacao-unificada-package`
+
+## Para que serve
+
+Padroniza a saída documental dos módulos Buriti (PDF, ODT, DOCX, ODS, XLSX, HTML, XML, CSV, TXT, JPEG) com cabeçalho/rodapé/logos/assinaturas. **Não** substitui o pacote de Relatórios avançados.
+
+## Desenho de funções
+
+| Função | Entrega |
+| --- | --- |
+| Drivers multi-formato | Dez formatos a partir do mesmo conteúdo |
+| Layout institucional | Identidade, assinaturas e rodapé padronizados |
+| Validador / QR | Link público de autenticação do documento |
+| Painel de configuração | `/exportacao` — identidade e formatos |
+| Demo de emissão | `/exportacao/demo` e comando `exportacao:demo` |
+| API de serviço | Consumo pelos demais pacotes (`EmissorDocumento`) |
+
+## Quem usa
+
+- Todos os módulos emissores
+- SME (configuração visual)
+- Público (validação de documento)
+
+## Integrações
+
+- Relatórios avançados (validador, quando disponível)
+- Pacotes Buriti consumidores
 
 ## Compatibilidade
 
 | Produto | Versão |
 | --- | --- |
-| **i-Educar** | **2.12.x** (min. 2.12.0) |
-| **i-Diário** | Portabilis i-Diário (espelho Laguna) via API/SSO do core |
-| Pacote | `0.3.0` |
+| **i-Educar** | **2.12.x** |
+| **i-Diário** | Portabilis i-Diário (API / SSO do núcleo) |
+| Pacote | `0.3.2` |
 
-Declarado em `composer.json` → `extra.ieducar` e `extra.idiario`.
+Declarado em `composer.json` → `extra.ieducar` / `extra.idiario`.
 
-## UI / Laguna PoC
+## Documentação
 
-| Rota | Função |
+| Documento | Uso |
 | --- | --- |
-| `/exportacao` | Painel de configuração (identidade, formatos, validador) |
-| `/exportacao/demo` | Emite amostra TR com layout + QR |
-| `/exportacao/validar/{code}` | Validação pública (QR) |
+| [`EPIC.md`](./EPIC.md) | Escopo de produto, aceite e critérios |
+| [`ROADMAP.md`](./ROADMAP.md) | Fases e entregas |
+| [`TODO.md`](./TODO.md) | Backlog operacional |
+| [`REQUISITOS-TR.md`](./REQUISITOS-TR.md) | Rastreio de requisitos (planejamento) |
 
-Catálogo: `CatalogoModulos` → `id: exportacao` · `admin_url: /exportacao` · comandos `exportacao:demo`.
+---
 
-## Onda 0
-
-Gate: **um relatório em ≥ 3 formatos**. Este pacote gera **todos** os 10 formatos do TR.
-
-```bash
-# testes sem banco
-php packages/buriti/i-educar-exportacao-unificada-package/tests/run.php
-
-# demo tabular
-php artisan exportacao:demo
-
-# demo com cabeçalho/rodapé/assinaturas/QR
-php artisan exportacao:demo --institucional
-```
-
-## Uso nos módulos (preferir)
-
-```php
-use iEducar\Packages\BuritiExportacaoUnificada\Services\EmissorDocumento;
-use iEducar\Packages\BuritiExportacaoUnificada\Support\Formato;
-use iEducar\Packages\BuritiExportacaoUnificada\Support\TabelaExportacao;
-
-return app(EmissorDocumento::class)->download(
-    new TabelaExportacao('Alunos', ['Nome', 'Turma'], [['Ana', '1A']]),
-    Formato::Pdf,
-    'Escolar',
-    auth()->user()?->name,
-);
-```
-
-Motor tabular puro (sem layout/QR):
-
-```php
-use iEducar\Packages\BuritiExportacaoUnificada\Services\Exportador;
-use iEducar\Packages\BuritiExportacaoUnificada\Support\Formato;
-use iEducar\Packages\BuritiExportacaoUnificada\Support\TabelaExportacao;
-
-$arquivo = app(Exportador::class)->exportar(
-    new TabelaExportacao('Alunos', ['Nome', 'Turma'], [['Ana', '1A']]),
-    Formato::Csv,
-);
-```
-
-## Documentos Laguna
-
-- `EPIC.md` · `ROADMAP.md` · `TODO.md` · `REQUISITOS-TR.md`
-- `docs/onda-0/STATUS.md` — evidência da Onda 0
-- `docs/onda-0/MATRIZ-POC-MODULO-4.md` · `MATRIZ-POC-INICIAL.md`
-- `docs/onda-0/check-ambiente.php` — Onda 0.2
-
-```bash
-php packages/buriti/i-educar-exportacao-unificada-package/docs/onda-0/check-ambiente.php
-```
+Licença: **GPL-2.0-or-later** · Organização [i-Educar](https://github.com/i-Educar)
