@@ -1,0 +1,9 @@
+{
+  "package": "i-educar-exportacao-unificada-package",
+  "composer": "buriti/i-educar-exportacao-unificada-package",
+  "version": "0.3.4",
+  "sha": "pending",
+  "full_sha": "pending",
+  "deployed_at": "2026-11-28T16:13:35Z",
+  "source": "github-actions"
+}
