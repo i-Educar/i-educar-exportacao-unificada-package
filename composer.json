@@ -1,54 +1,54 @@
 {
-    "name": "buriti/i-educar-exportacao-unificada-package",
-    "description": "Exportação unificada de listas e relatórios (TR 4.x Laguna) para o i-Educar 2.12.",
-    "version": "0.3.2",
-    "type": "library",
-    "license": "GPL-2.0-or-later",
-    "keywords": [
-        "ieducar",
-        "exportacao",
-        "buriti",
-        "laguna",
-        "idiario",
-        "2.12"
-    ],
-    "authors": [
-        {
-            "name": "Buriti"
-        }
-    ],
-    "require": {
-        "php": ">=8.3",
-        "ext-gd": "*",
-        "ext-zip": "*",
-        "illuminate/support": "^11.0|^12.0|^13.0",
-        "illuminate/console": "^11.0|^12.0|^13.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "iEducar\\Packages\\BuritiExportacaoUnificada\\": "src/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "iEducar\\Packages\\BuritiExportacaoUnificada\\Providers\\ExportacaoUnificadaServiceProvider"
-            ]
-        },
-        "ieducar": {
-            "compatible": [
-                "2.12"
-            ],
-            "min": "2.12.0",
-            "notes": "Alvo exclusivo i-Educar 2.12 (PHP ≥ 8.3, Illuminate ^11|^12|^13)."
-        },
-        "idiario": {
-            "compatible": true,
-            "via": "API i-Educar 2.12 + SSO (IdiarioPortal)",
-            "notes": "Compatível com Portabilis i-Diário no espelho Laguna; frequência/notas via sync do core."
-        }
-    },
-    "config": {
-        "sort-packages": true
+  "name": "buriti/i-educar-exportacao-unificada-package",
+  "description": "Exportação unificada de listas e relatórios (TR 4.x Laguna) para o i-Educar 2.12.",
+  "version": "0.3.3",
+  "type": "library",
+  "license": "GPL-2.0-or-later",
+  "keywords": [
+    "ieducar",
+    "exportacao",
+    "buriti",
+    "laguna",
+    "idiario",
+    "2.12"
+  ],
+  "authors": [
+    {
+      "name": "Buriti"
     }
+  ],
+  "require": {
+    "php": ">=8.3",
+    "ext-gd": "*",
+    "ext-zip": "*",
+    "illuminate/support": "^11.0|^12.0|^13.0",
+    "illuminate/console": "^11.0|^12.0|^13.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "iEducar\\Packages\\BuritiExportacaoUnificada\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "iEducar\\Packages\\BuritiExportacaoUnificada\\Providers\\ExportacaoUnificadaServiceProvider"
+      ]
+    },
+    "ieducar": {
+      "compatible": [
+        "2.12"
+      ],
+      "min": "2.12.0",
+      "notes": "Alvo exclusivo i-Educar 2.12 (PHP ≥ 8.3, Illuminate ^11|^12|^13)."
+    },
+    "idiario": {
+      "compatible": true,
+      "via": "API i-Educar 2.12 + SSO (IdiarioPortal)",
+      "notes": "Compatível com Portabilis i-Diário no espelho Laguna; frequência/notas via sync do core."
+    }
+  },
+  "config": {
+    "sort-packages": true
+  }
 }
