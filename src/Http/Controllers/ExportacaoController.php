@@ -75,22 +75,32 @@ final class ExportacaoController extends Controller
         );
     }
 
-    public function validarForm(): View
+    public function validarForm(): View|\Illuminate\Http\RedirectResponse
     {
+        if (class_exists(\iEducar\Packages\BuritiAssinaturaDigital\Services\ValidacaoPublicaService::class)) {
+            return redirect('/assinatura-digital/verificar');
+        }
+
         return view('exportacao::validar', [
             'resultado' => null,
             'codigo' => '',
         ]);
     }
 
-    public function validar(Request $request, ?string $codigo = null): View
+    public function validar(Request $request, ?string $codigo = null): View|\Illuminate\Http\RedirectResponse
     {
         $codigo = $codigo ?? (string) $request->input('codigo', '');
+        $codigo = strtoupper(trim($codigo));
+
+        if (class_exists(\iEducar\Packages\BuritiAssinaturaDigital\Services\ValidacaoPublicaService::class)) {
+            return redirect(app(\iEducar\Packages\BuritiAssinaturaDigital\Services\ValidacaoPublicaService::class)->urlPublica($codigo));
+        }
+
         $resultado = app(ValidadorDocumentoBridge::class)->validar($codigo);
 
         return view('exportacao::validar', [
             'resultado' => $resultado,
-            'codigo' => strtoupper(trim($codigo)),
+            'codigo' => $codigo,
         ]);
     }
 }

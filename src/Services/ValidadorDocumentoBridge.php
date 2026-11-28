@@ -78,6 +78,12 @@ final class ValidadorDocumentoBridge
                         $doc->issued_at,
                         $payload,
                     );
+                    if (! $ok) {
+                        $ok = $this->tentarRepararMac($doc, $signing, $payload);
+                        if ($ok) {
+                            $payload = is_array($doc->payload) ? $doc->payload : $payload;
+                        }
+                    }
 
                     return [
                         'ok' => $ok,
@@ -132,7 +138,9 @@ final class ValidadorDocumentoBridge
         $code = $signing->generateCode(8);
         $issuedAt = now();
         $issuedAtIso = \iEducar\Packages\AdvancedReports\Services\DocumentSigningService::issuedAtForMac($issuedAt);
-        $url = route('advanced-reports.documents.validate', ['code' => $code]);
+        $url = method_exists($signing, 'validationUrl')
+            ? $signing->validationUrl($code)
+            : route('advanced-reports.documents.validate', ['code' => $code]);
 
         $payloadToStore = array_merge($payload, ['validation_url' => $url]);
         $mac = $signing->mac($code, $tipo, $issuedAtIso, $payloadToStore);
@@ -166,7 +174,9 @@ final class ValidadorDocumentoBridge
     {
         $code = strtoupper(bin2hex(random_bytes(8)));
         $issuedAt = now()->utc()->format('Y-m-d\TH:i:s\Z');
-        $url = url('/exportacao/validar/'.$code);
+        $url = class_exists(\iEducar\Packages\BuritiAssinaturaDigital\Services\ValidacaoPublicaService::class)
+            ? app(\iEducar\Packages\BuritiAssinaturaDigital\Services\ValidacaoPublicaService::class)->urlPublica($code)
+            : url('/exportacao/validar/'.$code);
         $payloadToStore = array_merge($payload, ['validation_url' => $url]);
         $mac = $this->macLocal($code, $tipo, $issuedAt, $payloadToStore);
 
@@ -201,6 +211,46 @@ final class ValidadorDocumentoBridge
         ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '';
 
         return hash_hmac('sha256', $data, (string) config('app.key', 'exportacao-local'));
+    }
+
+    /**
+     * @param  array<string,mixed>  $payload
+     */
+    private function tentarRepararMac(
+        \iEducar\Packages\AdvancedReports\Models\AdvancedReportsDocument $doc,
+        \iEducar\Packages\AdvancedReports\Services\DocumentSigningService $signing,
+        array $payload,
+    ): bool {
+        if ($doc->issued_at === null) {
+            return false;
+        }
+
+        $payload = json_decode(json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '[]', true) ?: [];
+        $issuedAtIso = \iEducar\Packages\AdvancedReports\Services\DocumentSigningService::issuedAtForMac($doc->issued_at);
+        if (class_exists(\iEducar\Packages\BuritiAssinaturaDigital\Services\ValidacaoPublicaService::class)) {
+            $payload['validation_url'] = app(\iEducar\Packages\BuritiAssinaturaDigital\Services\ValidacaoPublicaService::class)
+                ->urlPublica((string) $doc->code);
+        }
+        $novo = $signing->mac((string) $doc->code, (string) $doc->type, $issuedAtIso, $payload);
+        if (! $signing->verify($novo, (string) $doc->code, (string) $doc->type, $issuedAtIso, $payload)) {
+            return false;
+        }
+
+        try {
+            $doc->payload = $payload;
+            $doc->mac = $novo;
+            $doc->save();
+        } catch (Throwable) {
+            return true;
+        }
+
+        return true;
+    }
+
+    /** QR data-URI para URL de validação (uso em PDF/HTML). */
+    public function qrParaUrl(string $url): ?string
+    {
+        return $this->qrDataUri($url);
     }
 
     private function qrDataUri(string $url): ?string

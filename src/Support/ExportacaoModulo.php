@@ -38,11 +38,12 @@ final class ExportacaoModulo
             return redirect()->back()->with('erro', 'Módulo de exportação unificada não está instalado.');
         }
 
-        // Modal envia validacao=0|1; se a request existir, respeita o formulário.
-        if (function_exists('request') && request()) {
-            if (request()->has('validacao')) {
-                $comValidacao = request()->boolean('validacao');
-            }
+        // Modal envia validacao=0|1; PDF institucional exige QR/código (padrão do validador).
+        $formatoNorm = strtolower(trim($formato)) ?: 'pdf';
+        if ($formatoNorm === 'pdf') {
+            $comValidacao = true;
+        } elseif (function_exists('request') && request() && request()->has('validacao')) {
+            $comValidacao = request()->boolean('validacao');
         }
 
         $tabela = new TabelaExportacao(

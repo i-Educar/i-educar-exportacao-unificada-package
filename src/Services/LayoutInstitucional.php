@@ -24,19 +24,38 @@ final class LayoutInstitucional
 
         $assinaturasHtml = '';
         if ($doc->assinaturas !== []) {
-            $assinaturasHtml .= '<section class="assinaturas"><h2>Assinaturas</h2><div class="grade-assina">';
-            foreach ($doc->assinaturas as $a) {
-                $nome = trim((string) ($a['nome'] ?? ''));
-                $cargo = trim((string) ($a['cargo'] ?? 'Responsável'));
-                $quando = trim((string) ($a['quando'] ?? ''));
-                $assinaturasHtml .= '<div class="assina">'
-                    .'<div class="linha-assina"></div>'
-                    .'<strong>'.$e($nome !== '' ? $nome : '________________').'</strong>'
-                    .'<span>'.$e($cargo).'</span>'
-                    .($quando !== '' ? '<small>'.$e($quando).'</small>' : '')
-                    .'</div>';
+            if (class_exists(\iEducar\Packages\BuritiAssinaturaDigital\Support\BlocoAssinatura::class)) {
+                $assinaturasHtml = \iEducar\Packages\BuritiAssinaturaDigital\Support\BlocoAssinatura::gradeHtml(
+                    $doc->assinaturas,
+                    [
+                        'cor' => (string) config('exportacao.institucional.cor', '#0a7a8a'),
+                    ],
+                );
+            } else {
+                $assinaturasHtml .= '<section class="assinaturas"><h2>Assinaturas</h2><div class="grade-assina">';
+                foreach ($doc->assinaturas as $a) {
+                    $nome = trim((string) ($a['nome'] ?? ''));
+                    $cargo = trim((string) ($a['cargo'] ?? 'Responsável'));
+                    $quando = trim((string) ($a['quando'] ?? ''));
+                    $codigo = trim((string) ($a['codigo_validacao'] ?? ''));
+                    $url = trim((string) ($a['url_validacao'] ?? ''));
+                    $auth = '';
+                    if ($codigo !== '' || $url !== '') {
+                        $label = 'Conferir autenticidade'.($codigo !== '' ? ' · '.$codigo : '');
+                        $auth = $url !== ''
+                            ? '<a class="ls-auth" href="'.$e($url).'">'.$e($label).'</a>'
+                            : '<span class="ls-auth">'.$e($label).'</span>';
+                    }
+                    $assinaturasHtml .= '<div class="assina">'
+                        .'<div class="linha-assina"></div>'
+                        .'<strong>'.$e($nome !== '' ? $nome : '________________').'</strong>'
+                        .'<span>'.$e($cargo).'</span>'
+                        .($quando !== '' ? '<small>'.$e($quando).'</small>' : '')
+                        .$auth
+                        .'</div>';
+                }
+                $assinaturasHtml .= '</div></section>';
             }
-            $assinaturasHtml .= '</div></section>';
         }
 
         $validacaoHtml = '';
@@ -44,12 +63,16 @@ final class LayoutInstitucional
             $qr = $doc->qrDataUri
                 ? '<img class="qr" src="'.$e($doc->qrDataUri).'" alt="QR de validação" width="120" height="120">'
                 : '';
+            $lsHint = class_exists(\iEducar\Packages\BuritiAssinaturaDigital\Services\AssinaturaOrquestrador::class)
+                ? '<p class="hint">Assinatura digital (LibreSign): confira também os códigos sob cada assinatura, quando houver.</p>'
+                : '';
             $validacaoHtml = '<section class="validacao">'
                 .$qr
-                .'<div><strong>Autenticidade</strong>'
+                .'<div><strong>Autenticidade do documento</strong>'
                 .'<p>Código: <code>'.$e((string) $doc->codigoValidacao).'</code></p>'
                 .'<p class="url">'.$e((string) $doc->urlValidacao).'</p>'
-                .'<p class="hint">Escaneie o QR ou abra o link para validar este documento.</p>'
+                .'<p class="hint">Escaneie o QR ou abra o link — verde na tela = documento válido.</p>'
+                .$lsHint
                 .'</div></section>';
         }
 
@@ -97,6 +120,8 @@ final class LayoutInstitucional
   .linha-assina { border-top:1px solid #1a242b; margin:0 18px 8px; height:0; }
   .assina strong { display:block; font-size:.88rem; color:var(--tinta); }
   .assina span, .assina small { display:block; color:var(--suave); font-size:.78rem; line-height:1.35; }
+  .assina .ls-auth, .ls-assina .ls-auth { display:inline-block; margin-top:6px; font-size:.72rem; color:var(--cor); text-decoration:none; border-bottom:1px dotted var(--cor); }
+  .ls-grade-assina { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:32px 28px; margin-top:8px; }
   .validacao { display:flex; gap:16px; align-items:center; margin:22px 0; padding:12px; border:1px dashed color-mix(in srgb,var(--cor) 40%,var(--linha)); border-radius:12px; background:#f7fbfc; }
   .validacao .qr { border:1px solid var(--linha); border-radius:8px; background:#fff; }
   .validacao .url { word-break:break-all; font-size:.75rem; color:var(--suave); }
@@ -170,6 +195,13 @@ HTML;
             foreach ($doc->assinaturas as $a) {
                 $linhas[] = '  - '.trim((string) ($a['cargo'] ?? 'Responsável'))
                     .(! empty($a['nome']) ? ': '.$a['nome'] : '');
+                $cod = trim((string) ($a['codigo_validacao'] ?? ''));
+                $urlA = trim((string) ($a['url_validacao'] ?? ''));
+                if ($cod !== '' || $urlA !== '') {
+                    $linhas[] = '    Conferir autenticidade'
+                        .($cod !== '' ? ' · '.$cod : '')
+                        .($urlA !== '' ? ' · '.$urlA : '');
+                }
             }
         }
         if ($doc->urlValidacao) {

@@ -37,6 +37,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Assinatura digital (LibreSign) nos documentos emitidos
+    |--------------------------------------------------------------------------
+    | Quando ativo e o pacote assinatura-digital estiver instalado, todo PDF
+    | com 1..N assinaturas entra no fluxo LibreSign após a emissão.
+    */
+    'assinatura_digital' => [
+        'habilitado' => (bool) env('EXPORTACAO_LIBRESIGN', true),
+        'falhar_silencioso' => (bool) env('EXPORTACAO_LIBRESIGN_SOFT', true),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Validador de documentos (QR + link público)
     |--------------------------------------------------------------------------
     | Conecta ao pacote Relatórios avançados quando disponível.
